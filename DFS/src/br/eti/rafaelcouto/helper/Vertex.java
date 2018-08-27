@@ -10,6 +10,7 @@ public class Vertex {
     public Vertex(Node start, Node end) {
         this.start = start;
         this.end = end;
+        this.cost = 0.0;
     }
 
     public Vertex(Node start, Node end, Double cost) {
@@ -54,5 +55,11 @@ public class Vertex {
     public int hashCode() {
 
         return Objects.hash(start, end);
+    }
+
+    @Override
+    public String toString() {
+        return start.toString() + " -> "
+                + end.toString() + " | (" + cost + ")";
     }
 }

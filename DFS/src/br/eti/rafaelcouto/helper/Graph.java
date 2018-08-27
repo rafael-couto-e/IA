@@ -21,4 +21,9 @@ public class Graph {
     public boolean addNode(Node node) {
         return this.nodes.add(node);
     }
+
+    @Override
+    public String toString() {
+        return nodes.toString();
+    }
 }
