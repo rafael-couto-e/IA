@@ -4,23 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Node {
-    private String name;
+public class Node<T> {
+    private T node;
     private Double heuristic;
     private List<Vertex> vertices;
 
-    public Node(String name, Double heuristic) {
-        this.name = name;
+    public Node(T node, Double heuristic) {
+        this.node = node;
         this.heuristic = heuristic;
         this.vertices = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    public T getNode() {
+        return node;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNode(T node) {
+        this.node = node;
     }
 
     public Double getHeuristic() {
@@ -48,16 +48,16 @@ public class Node {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
-        return Objects.equals(name, node.name);
+        return Objects.equals(this.node, node.node);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(node);
     }
 
     @Override
     public String toString() {
-        return name + " (" + heuristic + ")";
+        return node.toString() + " (" + heuristic + ")";
     }
 }

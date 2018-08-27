@@ -2,35 +2,35 @@ package br.eti.rafaelcouto.helper;
 
 import java.util.Objects;
 
-public class Vertex {
-    private Node start;
-    private Node end;
+public class Vertex<T> {
+    private Node<T> start;
+    private Node<T> end;
     private Double cost;
 
-    public Vertex(Node start, Node end) {
+    public Vertex(Node<T> start, Node<T> end) {
         this.start = start;
         this.end = end;
         this.cost = 0.0;
     }
 
-    public Vertex(Node start, Node end, Double cost) {
+    public Vertex(Node<T> start, Node<T> end, Double cost) {
         this(start, end);
         this.cost = cost;
     }
 
-    public Node getStart() {
+    public Node<T> getStart() {
         return start;
     }
 
-    public void setStart(Node start) {
+    public void setStart(Node<T> start) {
         this.start = start;
     }
 
-    public Node getEnd() {
+    public Node<T> getEnd() {
         return end;
     }
 
-    public void setEnd(Node end) {
+    public void setEnd(Node<T> end) {
         this.end = end;
     }
 
