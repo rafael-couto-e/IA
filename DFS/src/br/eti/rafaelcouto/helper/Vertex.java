@@ -1,37 +1,26 @@
 package br.eti.rafaelcouto.helper;
 
-import java.util.Objects;
+import java.util.*;
 
-public class Vertex<T> {
-    private Node<T> start;
-    private Node<T> end;
+public class Vertex {
+    private Collection<Node> nodes;
     private Double cost;
 
-    public Vertex(Node<T> start, Node<T> end) {
-        this.start = start;
-        this.end = end;
+    public Vertex(Node start, Node end) {
         this.cost = 0.0;
+
+        this.nodes = Collections.unmodifiableCollection(new ArrayList<Node>(){{
+            add(start);
+            add(end);
+        }});
+
+        start.addVertex(this);
+        end.addVertex(this);
     }
 
-    public Vertex(Node<T> start, Node<T> end, Double cost) {
+    public Vertex(Node start, Node end, Double cost) {
         this(start, end);
         this.cost = cost;
-    }
-
-    public Node<T> getStart() {
-        return start;
-    }
-
-    public void setStart(Node<T> start) {
-        this.start = start;
-    }
-
-    public Node<T> getEnd() {
-        return end;
-    }
-
-    public void setEnd(Node<T> end) {
-        this.end = end;
     }
 
     public Double getCost() {
@@ -42,24 +31,16 @@ public class Vertex<T> {
         this.cost = cost;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Vertex vertex = (Vertex) o;
-        return Objects.equals(start, vertex.start) &&
-                Objects.equals(end, vertex.end);
+    public Collection<Node> getNodes() {
+        return nodes;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(start, end);
+    public void setNodes(Collection<Node> nodes) {
+        this.nodes = nodes;
     }
 
     @Override
     public String toString() {
-        return start.toString() + " -> "
-                + end.toString() + " | (" + cost + ")";
+        return nodes.toString();
     }
 }

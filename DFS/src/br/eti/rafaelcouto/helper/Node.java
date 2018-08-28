@@ -1,25 +1,29 @@
 package br.eti.rafaelcouto.helper;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class Node<T> {
-    private T node;
+public class Node {
+    private String node;
     private Double heuristic;
     private List<Vertex> vertices;
+    private int index;
 
-    public Node(T node, Double heuristic) {
+    public Node(String node) {
         this.node = node;
-        this.heuristic = heuristic;
+        this.heuristic = 0.0;
         this.vertices = new ArrayList<>();
     }
 
-    public T getNode() {
+    public Node(String node, Double heuristic) {
+        this(node);
+        this.heuristic = heuristic;
+    }
+
+    public String getNode() {
         return node;
     }
 
-    public void setNode(T node) {
+    public void setNode(String node) {
         this.node = node;
     }
 
@@ -41,6 +45,14 @@ public class Node<T> {
 
     public boolean addVertex(Vertex vertex) {
         return this.vertices.add(vertex);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override
