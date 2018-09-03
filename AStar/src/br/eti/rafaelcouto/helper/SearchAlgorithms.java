@@ -150,7 +150,7 @@ public class SearchAlgorithms {
         return nodesList;
     }*/
 
-    public static List<Node> aStar() {
+    public static List<Node> aStar(Graph g, int s, int f) {
         /*
         marque s com custo 0
 
