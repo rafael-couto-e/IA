@@ -4,18 +4,18 @@ import java.util.*;
 
 public class Node {
     private String node;
-    private Double weight;
+    private Integer heuristics;
     private List<Vertex> vertices;
 
     public Node(String node) {
         this.node = node;
-        this.weight = 0.0;
+        this.heuristics = 0;
         this.vertices = new ArrayList<>();
     }
 
-    public Node(String node, Double weight) {
+    public Node(String node, Integer heuristics) {
         this(node);
-        this.weight = weight;
+        this.heuristics = heuristics;
     }
 
     public String getNode() {
@@ -26,12 +26,12 @@ public class Node {
         this.node = node;
     }
 
-    public Double getWeight() {
-        return weight;
+    public Integer getHeuristics() {
+        return heuristics;
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+    public void setHeuristics(Integer heuristics) {
+        this.heuristics = heuristics;
     }
 
     public List<Vertex> getVertices() {
@@ -61,6 +61,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return node.toString() + " (" + weight + ")";
+        return node.toString() + " (" + heuristics + ")";
     }
 }

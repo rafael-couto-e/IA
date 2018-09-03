@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Vertex {
     private Collection<Node> nodes;
-    private Double heuristic;
+    private Integer cost;
     private int index;
 
     public Vertex(Node start, Node end) {
-        this.heuristic = 0.0;
+        this.cost = 0;
 
         this.nodes = Collections.unmodifiableCollection(new ArrayList<Node>(){{
             add(start);
@@ -19,17 +19,17 @@ public class Vertex {
         end.addVertex(this);
     }
 
-    public Vertex(Node start, Node end, Double heuristic) {
+    public Vertex(Node start, Node end, Integer cost) {
         this(start, end);
-        this.heuristic = heuristic;
+        this.cost = cost;
     }
 
-    public Double getHeuristic() {
-        return heuristic;
+    public Integer getCost() {
+        return cost;
     }
 
-    public void setHeuristic(Double heuristic) {
-        this.heuristic = heuristic;
+    public void setCost(Integer cost) {
+        this.cost = cost;
     }
 
     public Collection<Node> getNodes() {
