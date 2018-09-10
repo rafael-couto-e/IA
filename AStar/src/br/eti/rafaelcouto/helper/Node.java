@@ -2,14 +2,18 @@ package br.eti.rafaelcouto.helper;
 
 import java.util.*;
 
-public class Node {
+public class Node{
     private String node;
     private Integer heuristics;
     private List<Vertex> vertices;
+    private Integer tracedCost;
+    private Integer estimatedCost;
 
     public Node(String node) {
         this.node = node;
         this.heuristics = 0;
+        this.tracedCost = 0;
+        this.estimatedCost = 0;
         this.vertices = new ArrayList<>();
     }
 
@@ -46,12 +50,32 @@ public class Node {
         return this.vertices.add(vertex);
     }
 
+    public Integer getTracedCost() {
+        return tracedCost;
+    }
+
+    public void setTracedCost(Integer tracedCost) {
+        this.tracedCost = tracedCost;
+    }
+
+    public Integer getEstimatedCost() {
+        return estimatedCost;
+    }
+
+    public void setEstimatedCost(Integer estimatedCost) {
+        this.estimatedCost = estimatedCost;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
         return Objects.equals(this.node, node.node);
+    }
+
+    public Integer getEstimate() {
+        return heuristics + tracedCost;
     }
 
     @Override
@@ -61,6 +85,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return node.toString() + " (" + heuristics + ")";
+        return node + " (" + heuristics + ")";
     }
 }

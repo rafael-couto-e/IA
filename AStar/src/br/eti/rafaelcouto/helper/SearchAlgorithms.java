@@ -5,185 +5,93 @@ import java.util.*;
 public class SearchAlgorithms {
     private static List<String> visited = new ArrayList<>();
 
-    /*public static List<Node> dfs(Graph g, int v, int f) {
-        List<Node> path = new ArrayList<>();
+    public static List<Node> ucs(Graph g, String s, String f) {
+        g.get(s).setTracedCost(0);//marque s com custo 0
+        PriorityQueue<Node> F = new PriorityQueue<>(
+                (o1, o2) -> o1.getTracedCost() > o2.getTracedCost() ? 1 :
+                o1.getTracedCost().equals(o2.getTracedCost()) ? 0 : -1
+        );
 
-        if (v == f) {
-            return new ArrayList<Node>(){{
-                add(g.get(f));
-            }};
-        }
+        F.add(g.get(s));//insira s em F (F é uma fila de prioridade)
 
-        visited.add(g.get(v).getNode());
-
-        System.out.println("Diving into "+g.get(v).getNode()+"...");
-
-        for(Node n: getAlphabeticNeighbours(g.get(v))) {
-            if (!visited.contains(n.getNode())) {
-                System.out.println(g.get(v).getNode()+"'s child: "+n.getNode()+"...");
-                path = dfs(g, n.getIndex(), f);
-            }
-
-            if (path.contains(g.get(f))) {
-                path.add(0, g.get(v));
-                visited.clear();
-                return path;
-            }
-        }
-
-        visited.clear();
-        return new ArrayList<>();
+        return process(g, s, f, F);
     }
 
-    public static List<Node> ldfs(Graph g, int v, int f, int l) {
-        List<Node> path = new ArrayList<>();
+    public static List<Node> greedy(Graph g, String s, String f) {
+        g.get(s).setTracedCost(0);//marque s com custo 0
+        PriorityQueue<Node> F = new PriorityQueue<>(
+                (o1, o2) -> o1.getHeuristics() > o2.getHeuristics() ? 1 :
+                        o1.getHeuristics().equals(o2.getHeuristics()) ? 0 : -1
+        );
 
-        if (l == 0) {
-            visited.clear();
-            return new ArrayList<>();
-        }
+        F.add(g.get(s));//insira s em F (F é uma fila de prioridade)
 
-        if (v == f) {
-            visited.clear();
-            return new ArrayList<Node>(){{
-                add(g.get(f));
-            }};
-        }
+        return process(g, s, f, F);
+    }
 
-        visited.add(g.get(v).getNode());
+    public static List<Node> aStar(Graph g, String s, String f) {
+        g.get(s).setTracedCost(0);//marque s com custo 0
+        PriorityQueue<Node> F = new PriorityQueue<>(
+                (o1, o2) -> o1.getEstimate() > o2.getEstimate() ? 1 :
+                        o1.getEstimate().equals(o2.getEstimate()) ? 0 : -1
+        );
 
-        System.out.println("Diving into "+g.get(v).getNode()+"...");
+        F.add(g.get(s));//insira s em F (F é uma fila de prioridade)
 
-        for(Node n: getAlphabeticNeighbours(g.get(v))) {
-            if (!visited.contains(n.getNode())) {
-                System.out.println(g.get(v).getNode()+"'s child: "+n.getNode()+"...");
+        return process(g, s, f, F);
+    }
 
-                if (n.getIndex() == f) {
-                    path.add(g.get(v));
-                    path.add(n);
-                    visited.clear();
-                    return path;
+    private static List<Node> process(Graph g, String s, String f, PriorityQueue<Node> F) {
+        Map<String, Node> origem = new HashMap<>();//origem = []
+
+        while(!F.isEmpty() && !F.peek().equals(g.get(f))) {//enquanto F não está vazia e não contém f no início da fila faça
+            Node v = F.poll();//seja v o primeiro vértice de F; retira v de F
+            visited.add(v.getNode());
+
+            for(Vertex vertex: v.getVertices()) {//para cada vizinho de v faça
+                Node[] neighbours = new Node[2];
+                vertex.getNodes().toArray(neighbours);
+                Node neighbour = neighbours[0];
+
+                if (neighbours[0].equals(v)) {
+                    neighbour = neighbours[1];
                 }
 
-                path = ldfs(g, n.getIndex(), f, l-1);
+                Integer cost = vertex.getCost();
 
-                if (path.contains(g.get(f))) {
-                    path.add(0, g.get(v));
-                    visited.clear();
-                    return path;
+                //se custo até vizinho vindo por v < custo marcado no vizinho então
+                if (!visited.contains(neighbour.getNode()) && !F.contains(neighbour)) {
+                    origem.put(neighbour.getNode(), v);
+                    neighbour.setTracedCost(cost+v.getTracedCost());
+                    F.add(neighbour);
+                }else if(F.contains(neighbour) && neighbour.getTracedCost() > v.getTracedCost()+cost) {
+                    origem.remove(neighbour.getNode());
+                    origem.put(neighbour.getNode(), v);
+                    neighbour.setTracedCost(cost+v.getTracedCost());
+                    F.remove(neighbour);
+                    F.add(neighbour);
                 }
             }
         }
 
-        visited.clear();
-        return new ArrayList<>();
+        System.out.println(F.peek().getTracedCost());
+
+        return build(g, s, f, F, origem);
     }
 
-    public static List<Node> iddfs(Graph g, int v, int f) {
-        List<Node> path = new ArrayList<>();
+    private static List<Node> build(Graph g, String s, String f, PriorityQueue<Node> F, Map<String, Node> origem) {
+        List<Node> caminho = new ArrayList<>();//caminho = []
 
-        int l = 1;
+        if (F.contains(g.get(f))) {//se fila contém f
+            caminho.add(g.get(f));//caminho = [f]
+            Node v = g.get(f);//v = f
 
-        while (!path.contains(g.get(f))) {
-            visited.clear();
-            System.out.println("\nIDDFS where L = "+l);
-
-            path = ldfs(g, v, f, l);
-            l+=1;
-        }
-
-        visited.clear();
-        return path;
-    }
-
-    public static List<Node> bfs(Graph g, int s, int f) {
-        LinkedList<Node> F = new LinkedList<>();
-
-        visited.add(g.get(s).getNode());
-        F.add(g.get(s));
-        int[] origin = new int[g.size()];
-
-        while(!F.isEmpty() && !F.contains(g.get(f))) {
-            Node v = F.getFirst();
-            System.out.println("Diving into "+v.getNode()+"...");
-
-            for (Node n: getAlphabeticNeighbours(v)) {
-                if(!visited.contains(n.getNode())) {
-                    System.out.println(v.getNode()+"'s child: "+n.getNode()+"...");
-
-                    visited.add(n.getNode());
-                    F.add(n);
-                    origin[n.getIndex()] = v.getIndex();
-                }
-            }
-
-            F.remove(v);
-        }
-
-        List<Node> path = new ArrayList<>();
-
-        if (F.contains(g.get(f))) {
-            path.add(g.get(f));
-
-            int v = f;
-
-            while (v != s) {
-                v = origin[v];
-                path.add(0, g.get(v));
+            while(v != g.get(s)) {//enquanto v != s
+                v = origem.get(v.getNode());//v = origem[v]
+                caminho.add(0, v);//caminho = [v caminho]
             }
         }
 
-        visited.clear();
-        return path;
-    }
-
-    private static List<Node> getAlphabeticNeighbours(Node node) {
-        Set<Node> nodes = new HashSet<>();
-
-        for(Vertex v: node.getVertices())
-            nodes.addAll(v.getNodes());
-
-        List<Node> nodesList = new ArrayList<>(nodes);
-
-        nodesList.sort(Comparator.comparing(Node::getNode));
-
-        return nodesList;
-    }*/
-
-    public static List<Node> aStar(Graph g, int s, int f) {
-        /*
-        marque s com custo 0
-
-        insira s em F (F é uma fila de prioridade)
-        origem = []
-
-        enquanto F não está vazia e não contém f no início da fila faça
-            seja v o primeiro vértice de F
-            para cada vizinho de v faça
-                se custo até vizinho vindo por v < custo marcado no vizinho então
-                    marque vizinho com custo vindo por v
-
-                    insira vizinho em F
-                    origem[vizinho] = v
-                fim se
-            fim para
-            retira v de F
-        fim enquanto
-
-        caminho = []
-
-        se fila contém f
-            caminho = [f]
-            v = f
-            enquanto v != s
-                v = origem[v]
-                caminho = [v caminho]
-            fim enquanto
-        fim se
-
-        retorne caminho
-        */
-
-        return null;
+        return caminho;
     }
 }

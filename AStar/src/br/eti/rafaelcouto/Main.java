@@ -2,6 +2,7 @@ package br.eti.rafaelcouto;
 
 import br.eti.rafaelcouto.helper.Graph;
 import br.eti.rafaelcouto.helper.Node;
+import br.eti.rafaelcouto.helper.SearchAlgorithms;
 import br.eti.rafaelcouto.helper.Vertex;
 
 public class Main {
@@ -79,5 +80,17 @@ public class Main {
         graph.addVertex(v23);
 
         //Realizando busca por A*
+        System.out.println(SearchAlgorithms.aStar(graph, "Arad", "Bucharest"));
+
+        /*
+        UCS: 418
+        [Arad (366), Sibiu (253), Rimnicu Vilcea (193), Pitesti (98), Bucharest (0)]
+
+        GREEDY: 450
+        [Arad (366), Sibiu (253), Fagaras (178), Bucharest (0)]
+
+        A*: 418
+        [Arad (366), Sibiu (253), Rimnicu Vilcea (193), Pitesti (98), Bucharest (0)]
+        */
     }
 }
