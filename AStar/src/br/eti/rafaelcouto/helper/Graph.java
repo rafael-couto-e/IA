@@ -27,6 +27,17 @@ public class Graph {
         return vertices.get(index);
     }
 
+    public Node get(String node) {
+        for (Vertex v: vertices) {
+            for (Node n: v.getNodes()) {
+                if (n.getNode().equals(node))
+                    return n;
+            }
+        }
+
+        return null;
+    }
+
     public int size() {
         return this.vertices.size();
     }
