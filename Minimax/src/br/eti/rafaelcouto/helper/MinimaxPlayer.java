@@ -15,9 +15,9 @@ public class MinimaxPlayer extends RandomPlayer {	//Confira o fonte da classe Ra
 
         if(depth == 0 || super.isTerminal(state)) { //SE estado é terminal OU profundidade = 0 ENTÃO
             if (PLAYER1) { //SE jogador1 ENTÃO
-                result[0] = super.heuristic(state); //RETORNE o valor da heurística do estado
+                result[0] = this.heuristic(state); //RETORNE o valor da heurística do estado
             } else { //SENÃO
-                result [0] = -super.heuristic(state); //RETORNE o negativo do valor da heurística do estado
+                result [0] = -this.heuristic(state); //RETORNE o negativo do valor da heurística do estado
             } //FIM SE
         } else { //SENÃO
             result[1] = Double.NEGATIVE_INFINITY; //valor ← -∞

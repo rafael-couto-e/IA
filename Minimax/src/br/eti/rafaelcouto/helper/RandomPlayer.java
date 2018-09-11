@@ -128,7 +128,7 @@ public class RandomPlayer {
      * @return
      */
     public double heuristic(int[][] state) {
-        return 0;   //Implementar sua heurística aqui
+        return 0;   //TODO Implementar sua heurística aqui
     }
     
     /**
