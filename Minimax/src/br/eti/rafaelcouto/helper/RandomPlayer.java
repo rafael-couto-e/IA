@@ -28,6 +28,22 @@ public class RandomPlayer {
         }
         return state;
     }
+
+    public int player(int[][] state) {
+        int val = 0;
+
+        for(int[] line: state) {
+            for(int item: line) {
+                val += item;
+            }
+        }
+
+        if (val == 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
     
     /**
      * Retorna uma lista com os movimentos possíveis a partir de um estado
@@ -139,6 +155,18 @@ public class RandomPlayer {
     public int play(int[][] state) {
         ArrayList<Integer> moves = validMoves(state);
         return moves.get((int) Math.floor(Math.random()*moves.size()));
+    }
+
+    public int recommendedPlay(int[][] previousState, int[][] currentState) {
+        for (int i = 0; i < previousState.length; i++) {
+            for (int j = 0; j < previousState[i].length; j++) {
+                if (previousState[i][j] != currentState[i][j]) {
+                    return i*3+j;
+                }
+            }
+        }
+
+        return -1;
     }
 
     /**
