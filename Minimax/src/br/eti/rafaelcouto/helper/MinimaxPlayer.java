@@ -136,5 +136,5 @@ public class MinimaxPlayer extends RandomPlayer {	//Confira o fonte da classe Ra
 
             x = -x;
         }
-    }    
+    }
 }
