@@ -1,35 +1,57 @@
 package br.eti.rafaelcouto.ai;
 
-import br.eti.rafaelcouto.model.Cluster;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class KMeans {
-    public static <T extends BaseKMeans> void init(List<T> elements, List<Cluster<T>> clusters) {
-        init(elements, clusters, 1);
+    public static <T extends BaseKMeans<T>> void init(List<T> elements, List<Cluster<T>> clusters, int runs) {
+        validate(elements, clusters, runs);
+
+        run(elements, clusters, runs);
     }
 
-    public static <T extends BaseKMeans> void init(List<T> elements, List<Cluster<T>> clusters, int runs) {
-        for(int i = runs; i >= 0; i--) {
-            for(T element: elements) {
-                findNearestCluster(element, clusters);
-            }
+    private static <T extends BaseKMeans<T>> void run(List<T> elements, List<Cluster<T>> clusters, int run) {
+        for(T element: elements) {
+            findNearestCluster(element, clusters);
+        }
 
-            updateClusters(clusters, i);
+        if (run > 0) {
+            updateClusters(clusters, run);
+            run(elements, clusters, run - 1);
         }
     }
 
-    public static <T extends BaseKMeans> void init(List<T> elements, int k, int runs) {
+    private static <T extends BaseKMeans<T>> void validate(List<T> elements, List<Cluster<T>> clusters, int runs) {
+        if (elements == null)
+            throw new NullPointerException("The elements list must not be null.");
+
+        if (elements.size() == 0)
+            throw new IllegalArgumentException("There must be at least one element.");
+
+        if (clusters == null)
+            throw new NullPointerException("The clusters list must not be null.");
+
+        if (clusters.size() == 0)
+            throw new IllegalArgumentException("There must be at least one cluster.");
+
+        if (runs == 0)
+            throw new IllegalArgumentException("There must be at least one run.");
+    }
+
+    public static <T extends BaseKMeans<T>> void init(List<T> elements, List<Cluster<T>> clusters) {
+        init(elements, clusters, 1);
+    }
+
+    public static <T extends BaseKMeans<T>> void init(List<T> elements, int k, int runs) {
         init(elements, randomClusters(elements, k), runs);
     }
 
-    public static <T extends BaseKMeans> void init(List<T> elements, int k) {
+    public static <T extends BaseKMeans<T>> void init(List<T> elements, int k) {
         init(elements, k, 1);
     }
 
-    private static <T extends BaseKMeans> void findNearestCluster(T element, List<Cluster<T>> clusters) {
+    private static <T extends BaseKMeans<T>> void findNearestCluster(T element, List<Cluster<T>> clusters) {
         for(Cluster<T> c: clusters) {
             if (element.getCluster() == null) {
                 element.setCluster(c);
@@ -45,9 +67,9 @@ public class KMeans {
         }
     }
 
-    private static <T extends BaseKMeans> void updateClusters(List<Cluster<T>> clusters, int times) {
+    private static <T extends BaseKMeans<T>> void updateClusters(List<Cluster<T>> clusters, int run) {
         for (Cluster<T> c : clusters) {
-            double[] averages = null;
+            Double[] averages = null;
 
             for (T element : c.getElements()) {
                 if (averages == null) {
@@ -60,23 +82,23 @@ public class KMeans {
                 }
             }
 
-            for (int i = 0; i < averages.length; i++) {
-                averages[i] /= c.getElements().size();
-            }
-
-            c.getInitial().setAverages(averages);
-
-            if (times != 0) {
-                for (T element: c.getElements()) {
-                    element.setCluster(null);
+            if (c.getElements().size() != 0) {
+                for (int i = 0; i < averages.length; i++) {
+                    averages[i] /= c.getElements().size();
                 }
 
-                c.getElements().clear();
+                c.getInitial().setAverages(averages);
             }
+
+            for (T element: c.getElements()) {
+                element.setCluster(null);
+            }
+
+            c.getElements().clear();
         }
     }
 
-    private static <T extends BaseKMeans> List<Cluster<T>> randomClusters(List<T> elements, int k) {
+    private static <T extends BaseKMeans<T>> List<Cluster<T>> randomClusters(List<T> elements, int k) {
         List<Cluster<T>> clusters = new ArrayList<>();
         List<Integer> indexes = new ArrayList<>();
 

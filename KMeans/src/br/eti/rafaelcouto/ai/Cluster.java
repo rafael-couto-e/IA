@@ -1,17 +1,21 @@
-package br.eti.rafaelcouto.model;
-
-import br.eti.rafaelcouto.ai.BaseKMeans;
+package br.eti.rafaelcouto.ai;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cluster<T extends BaseKMeans> {
     private T initial;
+    private String name;
     private List<T> elements;
 
     public Cluster(T initial) {
         this.initial = initial;
         this.elements = new ArrayList<>();
+    }
+
+    public Cluster(T initial, String name) {
+        this(initial);
+        this.name = name;
     }
 
     public T getInitial() {
@@ -38,17 +42,16 @@ public class Cluster<T extends BaseKMeans> {
         this.elements.remove(element);
     }
 
-    @Override
-    public String toString() {
+    public String getAverages() {
         StringBuilder stringBuilder = new StringBuilder("[");
 
-        for (double d: initial.getAverages()) {
+        for (Double d: initial.getAverages()) {
             if (stringBuilder.toString().equals("[")) {
                 stringBuilder.append(d);
                 continue;
             }
 
-            stringBuilder.append(", "+d);
+            stringBuilder.append(", ").append(d);
         }
 
         stringBuilder.append("]");

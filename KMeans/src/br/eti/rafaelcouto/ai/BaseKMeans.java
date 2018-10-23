@@ -1,9 +1,8 @@
 package br.eti.rafaelcouto.ai;
 
-import br.eti.rafaelcouto.model.Cluster;
-
 public abstract class BaseKMeans<T extends BaseKMeans> {
     protected Cluster<T> cluster;
+    protected Double[] averages;
 
     public Cluster<T> getCluster() {
         return cluster;
@@ -13,11 +12,14 @@ public abstract class BaseKMeans<T extends BaseKMeans> {
         this.cluster = cluster;
     }
 
-    public abstract double calculateVariance(T other);
+    public abstract Double calculateVariance(T other);
 
-    public abstract double calculateCurrentVariance();
+    public Double calculateCurrentVariance() {
+        T other = cluster.getInitial();
 
-    public abstract double[] getAverages();
+        return calculateVariance(other);
+    }
 
-    public abstract void setAverages(double[] averages);
+    public abstract Double[] getAverages();
+    public abstract void setAverages(Double[] averages);
 }

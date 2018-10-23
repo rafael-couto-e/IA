@@ -5,16 +5,16 @@ import br.eti.rafaelcouto.ai.BaseKMeans;
 import java.util.Objects;
 
 public class Iris extends BaseKMeans<Iris> {
-    private double compSepala;
-    private double largSepala;
-    private double compPetala;
-    private double largPetala;
+    private Double compSepala;
+    private Double largSepala;
+    private Double compPetala;
+    private Double largPetala;
     private String name;
 
     public Iris() {
     }
 
-    public Iris(double compSepala, double largSepala, double compPetala, double largPetala) {
+    public Iris(Double compSepala, Double largSepala, Double compPetala, Double largPetala) {
         this();
         this.compSepala = compSepala;
         this.largSepala = largSepala;
@@ -22,40 +22,40 @@ public class Iris extends BaseKMeans<Iris> {
         this.largPetala = largPetala;
     }
 
-    public Iris(double compSepala, double largSepala, double compPetala, double largPetala, String name) {
+    public Iris(Double compSepala, Double largSepala, Double compPetala, Double largPetala, String name) {
         this(compSepala, largSepala, compPetala, largPetala);
         this.name = name;
     }
 
-    public double getCompSepala() {
+    public Double getCompSepala() {
         return compSepala;
     }
 
-    public void setCompSepala(double compSepala) {
+    public void setCompSepala(Double compSepala) {
         this.compSepala = compSepala;
     }
 
-    public double getLargSepala() {
+    public Double getLargSepala() {
         return largSepala;
     }
 
-    public void setLargSepala(double largSepala) {
+    public void setLargSepala(Double largSepala) {
         this.largSepala = largSepala;
     }
 
-    public double getCompPetala() {
+    public Double getCompPetala() {
         return compPetala;
     }
 
-    public void setCompPetala(double compPetala) {
+    public void setCompPetala(Double compPetala) {
         this.compPetala = compPetala;
     }
 
-    public double getLargPetala() {
+    public Double getLargPetala() {
         return largPetala;
     }
 
-    public void setLargPetala(double largPetala) {
+    public void setLargPetala(Double largPetala) {
         this.largPetala = largPetala;
     }
 
@@ -84,7 +84,7 @@ public class Iris extends BaseKMeans<Iris> {
     }
 
     @Override
-    public double calculateVariance(Iris other) {
+    public Double calculateVariance(Iris other) {
         return Math.pow(this.compSepala - other.compSepala, 2) +
                 Math.pow(this.largSepala - other.largSepala, 2) +
                 Math.pow(this.compPetala - other.compPetala, 2) +
@@ -92,21 +92,18 @@ public class Iris extends BaseKMeans<Iris> {
     }
 
     @Override
-    public double calculateCurrentVariance() {
-        Iris other = this.getCluster().getInitial();
+    public Double[] getAverages() {
+        if (averages == null) {
+            this.averages = new Double[]{
+                    compSepala, largSepala, compPetala, largPetala
+            };
+        }
 
-        return calculateVariance(other);
+        return averages;
     }
 
     @Override
-    public double[] getAverages() {
-        return new double[]{
-            compSepala, largSepala, compPetala, largPetala
-        };
-    }
-
-    @Override
-    public void setAverages(double[] averages) {
+    public void setAverages(Double[] averages) {
         this.compSepala = averages[0];
         this.largSepala = averages[1];
         this.compPetala = averages[2];

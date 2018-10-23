@@ -1,14 +1,13 @@
 package br.eti.rafaelcouto;
 
 import br.eti.rafaelcouto.ai.KMeans;
-import br.eti.rafaelcouto.model.Cluster;
+import br.eti.rafaelcouto.ai.Cluster;
 import br.eti.rafaelcouto.model.Iris;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-
     public static void main(String[] args) {
         Iris iris1 = new Iris(5.9, 3.0, 5.1, 1.8, "1");
         Iris iris2 = new Iris(5.7, 2.8, 4.1, 1.3, "2");
@@ -40,18 +39,29 @@ public class Main {
             System.out.println("Cluster for "+i.getName()+": "+i.getCluster());
         }*/
 
-        KMeans.init(elements, clusters);
+        KMeans.init(elements, clusters, 5);
 
         int i = 1;
 
         for (Cluster<Iris> c: clusters) {
-            System.out.print("Média "+i+": [");
+            StringBuilder stringBuilder = new StringBuilder("Média ").append(i).append(": [");
+
             for(double d: c.getInitial().getAverages()) {
-                System.out.print(d+", ");
+                if (stringBuilder.toString().equals("Média "+i+": [")) {
+                    stringBuilder.append(d);
+                    continue;
+                }
+
+                stringBuilder.append(", ").append(d);
             }
-            System.out.println("]");
-            System.out.println("Elementos "+i+": "+c.getElements());
+
+            stringBuilder.append("]");
+
+            stringBuilder.append("\nElementos ").append(i).append(": ").append(c.getElements());
+
             i++;
+
+            System.out.println(stringBuilder.toString());
         }
     }
 }
