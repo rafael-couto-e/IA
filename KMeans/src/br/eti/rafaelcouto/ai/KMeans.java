@@ -54,14 +54,11 @@ public class KMeans {
     private static <T extends BaseKMeans<T>> void findNearestCluster(T element, List<Cluster<T>> clusters) {
         for(Cluster<T> c: clusters) {
             if (element.getCluster() == null) {
-                element.setCluster(c);
                 c.addElement(element);
                 continue;
             }
 
-            if (c.getInitial().calculateVariance(element) < element.calculateCurrentVariance()) {
-                element.getCluster().removeElement(element);
-                element.setCluster(c);
+            if (c.getInitial().calculateDistance(element) < element.calculateCurrentVariance()) {
                 c.addElement(element);
             }
         }
@@ -94,7 +91,7 @@ public class KMeans {
                 element.setCluster(null);
             }
 
-            c.getElements().clear();
+            c.clearElements();
         }
     }
 

@@ -12,12 +12,12 @@ public abstract class BaseKMeans<T extends BaseKMeans> {
         this.cluster = cluster;
     }
 
-    public abstract Double calculateVariance(T other);
+    public abstract Double calculateDistance(T other);
 
     public Double calculateCurrentVariance() {
         T other = cluster.getInitial();
 
-        return calculateVariance(other);
+        return calculateDistance(other);
     }
 
     public abstract Double[] getAverages();

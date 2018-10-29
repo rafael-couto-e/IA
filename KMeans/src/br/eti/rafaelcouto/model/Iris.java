@@ -84,11 +84,13 @@ public class Iris extends BaseKMeans<Iris> {
     }
 
     @Override
-    public Double calculateVariance(Iris other) {
-        return Math.pow(this.compSepala - other.compSepala, 2) +
+    public Double calculateDistance(Iris other) {
+        Double variance = Math.pow(this.compSepala - other.compSepala, 2) +
                 Math.pow(this.largSepala - other.largSepala, 2) +
                 Math.pow(this.compPetala - other.compPetala, 2) +
                 Math.pow(this.largPetala - other.largPetala, 2);
+
+        return Math.sqrt(variance);
     }
 
     @Override

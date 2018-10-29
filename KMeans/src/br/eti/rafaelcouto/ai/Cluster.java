@@ -35,11 +35,20 @@ public class Cluster<T extends BaseKMeans> {
     }
 
     public void addElement(T element) {
+        if (element.getCluster() != null) {
+            element.getCluster().removeElement(element);
+        }
+
+        element.setCluster(this);
         this.elements.add(element);
     }
 
     public void removeElement(T element) {
         this.elements.remove(element);
+    }
+
+    public void clearElements() {
+        this.elements.clear();
     }
 
     public String getAverages() {
