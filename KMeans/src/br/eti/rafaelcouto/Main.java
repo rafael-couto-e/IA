@@ -36,7 +36,7 @@ public class Main {
         /*KMeans.init(elements, 3);
 
         for (Iris i: elements) {
-            System.out.println("Cluster for "+i.getName()+": "+i.getCluster());
+            System.out.println("Cluster for "+i.getHex()+": "+i.getCluster());
         }*/
 
         KMeans.init(elements, clusters, 5);
