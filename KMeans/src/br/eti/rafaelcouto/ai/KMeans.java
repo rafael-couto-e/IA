@@ -108,7 +108,12 @@ public class KMeans {
             } while (indexes.contains(rand));
 
             indexes.add(rand);
-            clusters.add(new Cluster<>(elements.get(rand)));
+
+            try {
+                clusters.add(new Cluster<>((T) elements.get(rand).clone()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return clusters;

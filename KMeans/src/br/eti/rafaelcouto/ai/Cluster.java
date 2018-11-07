@@ -67,4 +67,9 @@ public class Cluster<T extends BaseKMeans> {
 
         return stringBuilder.toString();
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

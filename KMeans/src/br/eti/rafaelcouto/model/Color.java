@@ -94,4 +94,10 @@ public class Color extends BaseKMeans<Color> {
         this.green = averages[1];
         this.blue = averages[2];
     }
+
+    @Override
+    public String toString() {
+        return "\n[hex: #"+hex+", red: "+red+", green: "+green
+                +", blue: "+blue+"]\n";
+    }
 }

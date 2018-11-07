@@ -9,7 +9,7 @@ public class Person extends BaseKMeans<Person> {
     private Double height;
     private String name;
 
-    public Person(Double weight, Double height) {
+    public Person(Double height, Double weight) {
         this.weight = weight;
         this.height = height;
     }
@@ -80,5 +80,10 @@ public class Person extends BaseKMeans<Person> {
     public void setAverages(Double[] averages) {
         this.weight = averages[0];
         this.height = averages[1];
+    }
+
+    @Override
+    public String toString() {
+        return "\n[name: "+name+", weight: "+weight+", height: "+height+"]\n";
     }
 }

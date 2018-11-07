@@ -1,6 +1,6 @@
 package br.eti.rafaelcouto.ai;
 
-public abstract class BaseKMeans<T extends BaseKMeans> {
+public abstract class BaseKMeans<T extends BaseKMeans> implements Cloneable {
     protected Cluster<T> cluster;
     protected Double[] averages;
 
@@ -22,4 +22,9 @@ public abstract class BaseKMeans<T extends BaseKMeans> {
 
     public abstract Double[] getAverages();
     public abstract void setAverages(Double[] averages);
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
